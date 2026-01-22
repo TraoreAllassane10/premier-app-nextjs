@@ -9,6 +9,22 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 import { VIDEOS } from "@/app/formations/data";
+import { notFound } from "next/navigation";
+
+export async function generateStaticParams() {
+  const videos = VIDEOS;
+
+  const result = videos.flatMap((video) => {
+    const params = video.lessons.map((lesson) => ({
+      videoId: video.id,
+      lessonId: lesson.id,
+    }));
+
+    return params;
+  });
+
+  return result;
+}
 
 export default async function Page(props: {
   params: Promise<{ videoId: string; lessonId: string }>;
@@ -26,7 +42,7 @@ export default async function Page(props: {
   );
 
   if (!lesson) {
-    return <p>Invalid lesson</p>;
+    notFound();
   }
 
   return (

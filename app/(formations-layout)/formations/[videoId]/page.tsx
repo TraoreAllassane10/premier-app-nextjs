@@ -9,6 +9,16 @@ import {
 import Link from "next/link";
 import { VIDEOS } from "../data";
 
+export async function generateStaticParams() {
+  const videos = VIDEOS;
+
+  const result = videos.map((video) => ({
+    videoId: video.id,
+  }));
+
+  return result;
+}
+
 export default async function Page(props: {
   params: Promise<{ videoId: string }>;
 }) {
